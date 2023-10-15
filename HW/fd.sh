@@ -1,5 +1,5 @@
 #!/bin/bash 
 
-echo "This is a standart output"
-echo "This is an error message" >&2
+echo "This is a standart output" > stdout.txt 
+echo "This is an error message" >& stderr.txt
 exit 0 
