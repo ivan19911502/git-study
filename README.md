@@ -30,4 +30,16 @@ round the corner now.
 Outside the dawn is breaking 
 But inside in the dark 
 I'm aching to be free
+
+4. Show must go on! 
+Show must go on! Yeah! 
+Inside my heart is breaking 
+My make-up may be flaking 
+But my smile still stays on. 
+ 
+My soul is painted like 
+the wings of butterflies. 
+Fairytales of yesterday 
+will grow but never die. 
+I can fly my friends!
 ```
