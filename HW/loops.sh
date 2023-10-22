@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ -n "$*" ]]; then
+if [ -n "$*" ]; then
 
 
 echo "$*" | tr 'a-zA-Z' 'A-Za-z' | rev
