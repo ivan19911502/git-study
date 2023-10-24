@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 x=273
 string=${@:1}
 cifra=${#string}-1
@@ -12,8 +13,7 @@ b=${string:0:$cifra}
 	elif [ "$a" = "K" ] && [ $b -ge 273 ]; then
 	result1=$(($b - x))C
 	echo $result1
-	else 
+	else
 	echo "Error"
 	fi
-
 
