@@ -1,9 +1,13 @@
 #!/bin/bash
 
+#convert temperatures between Celsius and Kelvin scales
 
 x=273
 string=${@:1}
 cifra=${#string}-1
+
+#numeralization
+
 a=${string:(-1):1}
 b=${string:0:$cifra}
 

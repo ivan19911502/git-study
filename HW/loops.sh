@@ -1,5 +1,6 @@
 #!/bin/bash
 
+#produce the reversed version of the input string.
 if [ -n "$*" ]; then
 
 

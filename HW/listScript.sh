@@ -1,16 +1,16 @@
-#!/bin/bash 
-
-if [[ $1 -le 32 ]]; then
-
-	alfabet=("abcdefghijklmnopqrstuvwxyz")
+#!/bin/bash
 
 
+#generate count of directories with naming them alphabetically
 
-	alfa=${alfabet:0:$1}
-	for (( i=0; i<${#alfa}; i++ )); do
-		mkdir dir_${alfa:$i:1}
-	done
-else
-	echo "Error"
+if [[ $1 -ge 32 ]]; then
+echo "Error, input number 1-32!"
+exit 1
 fi
+
+alfa=({a..z})
+for (( i=0; i<$1; i++ )); do
+mkdir dir_${alfa[i]}
+done
+
 
