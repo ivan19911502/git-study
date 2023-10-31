@@ -2,7 +2,7 @@
 
 #checks the size of a given file
 
-if [ "$1" == 0 ];then
+if [ "$1" == 0 ]; then
 echo "INPUT FILE"
 exit 1
 fi
