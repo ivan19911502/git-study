@@ -6,20 +6,15 @@ if [ $# -ne 2 ]; then
 exit 1
 fi
 
-a=$(($1 + $2))
-b=$(($1 * $2))
-d=$(($1 - $2))
-
 #check the divider isn't 0
 if [ $2 -eq 0 ]; then
 	echo "You can't devede by zero"
 else
-c=$(($1 / $2))
 	echo "Expected Output:"
-	echo "Sum: $a"
-	echo "Product: $b"
-	echo "Quotient: $c"
-	echo "Difference: $d"
+	echo "Sum: $(($1 + $2))"
+	echo "Product: $(($1 * $2))"
+	echo "Quotient: $(($1 - $2))"
+	echo "Difference: $(($1 / $2))"
 fi
 
 
