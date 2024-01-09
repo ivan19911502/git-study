@@ -1,0 +1,5 @@
+vars:
+    ssh_key_filename: admin_key
+    ssh_key_location_path: /home/ivan11/ansible_quickstart
+    sshd_config_file: /etc/ssh/sshd_config
+    local_user: ivan11

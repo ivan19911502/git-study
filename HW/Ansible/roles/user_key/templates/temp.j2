@@ -1,0 +1,10 @@
+
+{% if host.password_authentication is defined %}
+  PasswordAuthentication {{ 'yes' if host.password_authentication else 'no' }}
+{% endif %}
+{% if host.password_authentication is defined %}
+  PermitRootLogin {{ 'yes' if host.permit_root_login else 'no' }}
+{% endif %}
+{% if host.password_authentication is defined %}
+  PermitEmptyPasswords {{ 'no' if host.permit_empty_passwords else 'yes' }}
+{% endif %}

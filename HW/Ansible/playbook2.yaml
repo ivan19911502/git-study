@@ -1,0 +1,50 @@
+---
+- name: First server preparation
+  hosts: all
+  gather_facts: no
+  become: no
+  # ignore_errors: true
+  vars:
+    ssh_key_filename: admin_key
+    ssh_key_location_path: /home/ivan11/ansible_quickstart
+    sshd_config_file: /etc/ssh/sshd_config
+    local_user: ivan11
+  tasks:
+  - name: generate SSH key "{{ ssh_key_filename }}"
+    user:
+      name: "{{ local_user }}"
+      generate_ssh_key: yes
+      ssh_key_type: rsa
+      ssh_key_bits: 4096
+      ssh_key_file: "{{ ssh_key_location_path }}/{{ ssh_key_filename }}"
+      force: no
+    delegate_to: localhost
+    run_once: yes
+
+  - name: add key to host
+    ansible.builtin.command: ssh-copy-id -i /home/ivan11/ansible_quickstart/admin_key.pub ivan22@ivan22-VirtualBox
+    delegate_to: localhost
+
+
+  - name: Configure sshd
+    become: yes
+    lineinfile:
+      path: "/etc/ssh/sshd_config"
+      regex: "^(#)?{{ item.key }}"
+      line: "{{ item.key }} {{ item.value }}"
+      state: present
+    loop:
+      - { key: "PermitRootLogin", value: "no" }
+      - { key: "PasswordAuthentication", value: "no" }
+      - { key: "PermitEmptyPasswords", value: "yes" }
+    notify:
+      - restart sshd
+
+  handlers:
+  - name: restart sshd
+    become: yes
+    service:
+      name: sshd
+      state: restarted    
+
+  
