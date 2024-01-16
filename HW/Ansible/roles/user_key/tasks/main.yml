@@ -1,32 +1,37 @@
 ---
 - name: add_user_with_group
+  become: yes
   user: 
     name: alice
-    password: 123
+    password: 123456
     shell: /bin/bash
     groups: sudo
 
 
-- name: update_configuration_files
-  ansible.builtin.template:
-    src: etc/ssh/ssh_config.j2
-    dest: "{{ sshd_config_file }}"
-  notify:
-      - restart sshd
 
-- name: generate SSH key "{{ ssh_key_filename }}"
-    user:
-      name: "{{ local_user }}"
-      generate_ssh_key: yes
-      ssh_key_type: rsa
-      ssh_key_bits: 4096
-      ssh_key_file: "{{ ssh_key_location_path }}/{{ ssh_key_filename }}"
-      force: no
-    delegate_to: localhost
-    run_once: yes
+- name: generate SSH key 
+  user:
+    name: "{{ local_user }}"
+    generate_ssh_key: yes
+    ssh_key_type: rsa
+    ssh_key_bits: 4096
+    ssh_key_file: "{{ ssh_key_location_path }}/{{ ssh_key_filename }}"
+    force: no
+  delegate_to: localhost
+  run_once: yes
 
 - name: add key to remote hosts
+  become: yes
   authorized_key:
     key: "{{ lookup('file', ssh_key_location_path+'/'+ssh_key_filename+'.pub') }}"
     state: present
     user: alice
+
+
+
+- name: update_conf_files
+  ansible.builtin.template:
+    src: /home/ivan11/git/git-study/HW/Ansible/roles/user_key/templates/sshd_config.j2
+    dest: "{{ sshd_config_file }}"
+  notify:
+      - restart sshd

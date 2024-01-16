@@ -1,5 +1,10 @@
 ---
-vars:
+- hosts: apache1
+  become: no
+  gather_facts: true
+  roles:
+    - user_key
+  vars:
     ssh_key_filename: admin_key
     ssh_key_location_path: /home/ivan11/git/git-study/HW/Ansible
     sshd_config_file: /etc/ssh/sshd_config

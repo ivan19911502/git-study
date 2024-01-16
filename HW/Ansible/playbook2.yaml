@@ -1,3 +1,4 @@
+
 ---
 - name: First server preparation
   hosts: all

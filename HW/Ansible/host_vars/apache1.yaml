@@ -1,0 +1,8 @@
+ansible_host: 192.168.56.5
+ansible_user: ivan22
+ansible_password: 12345 
+uid: 1000
+
+password_authentication: PasswordAuthentication
+permit_root_login: PermitRootLogin
+permit_empty_passwords: PermitEmptyPasswords
