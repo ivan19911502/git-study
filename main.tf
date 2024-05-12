@@ -20,3 +20,19 @@ resource "local_file" "password1" {
   filename = "/home/ivan111/Terraform/admin_password.txt"
 }
 
+
+
+terraform {
+  required_providers {
+    local = {
+      source  = "hashicorp/local"
+      version = "~> 2.1.0"
+    }
+  
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.1.0"
+    }
+  }
+}
+
