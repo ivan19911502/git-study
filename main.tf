@@ -11,13 +11,13 @@ resource "random_password" "admin_password" {
 
 resource "local_file" "password" {
   content = random_password.user_password.result
-  filename = "/home/ivan111/Terraform/user_password.txt"
+  filename = "/home/ivan111/Terraform/git-study/user_password.txt"
 }
 
 
 resource "local_file" "password1" {
   content = random_password.admin_password.result
-  filename = "/home/ivan111/Terraform/admin_password.txt"
+  filename = "/home/ivan111/Terraform/git-study/admin_password.txt"
 }
 
 
@@ -42,7 +42,7 @@ terraform {
 
 resource "local_file" "ip" {
   content = var.list_ip_addresses[0]
-  filename = "/home/ivan111/Terraform/ip_addresses.txt"
+  filename = "/home/ivan111/Terraform/git-study/ip_addresses.txt"
 }
 
 
@@ -51,7 +51,7 @@ resource "local_file" "ip" {
 
 resource "local_file" "surname" {
   content = var.surname_name
-  filename = "/home/ivan111/Terraform/personal_info.txt"
+  filename = "/home/ivan111/Terraform/git-study/personal_info.txt"
 }
 
 
@@ -60,6 +60,6 @@ resource "local_file" "surname" {
 
 resource "local_file" "unique" {
   content = var.unique_ids[0]
-  filename = "/home/ivan111/Terraform/unique_ids.txt"
+  filename = "/home/ivan111/Terraform/git-study/unique_ids.txt"
 }
 
