@@ -80,3 +80,10 @@ variable "reversed_sf" {
     "chun-li", "balrog", "cody", "rolento", "ibuki"
   ]
 }
+
+
+variable "instance_size" {
+  type = string
+  default = "small"
+  description = "largeandsmall"
+}
