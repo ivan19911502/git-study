@@ -1,0 +1,13 @@
+---
+- hosts: webservers
+  become: yes
+  roles:
+    - ssh
+    - common
+    - dependencies
+    - postgresql
+    - wordpress
+    - apache
+    - nginx
+    - firewall
+    

@@ -1,0 +1,33 @@
+---
+- name: Install Apache
+  ansible.builtin.apt:
+    name: apache2
+    state: present
+
+- name: Configure Apache for WordPress
+  ansible.builtin.template:
+    src: wordpress.conf.j2
+    dest: /etc/apache2/sites-available/wordpress.conf
+  notify: Restart Apache
+
+- name: Enable WordPress site
+  ansible.builtin.command: a2ensite wordpress.conf
+  notify: Restart Apache
+
+
+- name: Enable URL rewriting
+  ansible.builtin.command: a2enmod rewrite
+  notify: Restart Apache
+
+
+- name: Disable the default “It Works” site 
+  ansible.builtin.command: a2dissite 000-default
+  notify: Restart Apache
+
+
+- name: Modify Apache ports
+  ansible.builtin.lineinfile:
+    path: /etc/apache2/ports.conf
+    regexp: '^Listen 80'
+    line: 'Listen 8080'
+  notify: Restart Apache

@@ -1,0 +1,42 @@
+---
+- name: Install Nginx
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+
+- name: Create ssl directory
+  ansible.builtin.file:
+    path: /etc/nginx/ssl
+    state: directory
+    
+- name: Generate SSL private key
+  ansible.builtin.openssl_privatekey:
+    path: /etc/nginx/ssl/ivanlab.key
+    size: 2048
+  become: yes
+
+- name: Generate self-signed SSL certificate
+  ansible.builtin.openssl_certificate:
+    path: /etc/nginx/ssl/ivanlab.crt
+    privatekey_path: /etc/nginx/ssl/ivanlab.key
+    provider: selfsigned
+  become: yes
+
+- name: Configure Nginx
+  ansible.builtin.template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-available/word.conf
+  notify: Restart Nginx
+
+- name: Enable Nginx site configuration
+  ansible.builtin.file:
+    src: /etc/nginx/sites-available/word.conf
+    dest: /etc/nginx/sites-enabled/word.conf
+    state: link
+  notify: Restart Nginx
+
+- name: Create custom index page
+  ansible.builtin.template:
+    src: myindex.html.j2
+    dest: /usr/share/nginx/html/myindex.html
+

@@ -1,0 +1,22 @@
+---
+- name: Install dependencies
+  ansible.builtin.apt:
+    name:
+      - openssh-server
+      - git
+      - ghostscript
+      - libapache2-mod-php
+      - mysql-server
+      - php
+      - php-bcmath
+      - php-curl
+      - php-imagick
+      - php-intl
+      - php-json
+      - php-mbstring
+      - php-mysql
+      - php-xml
+      - php-zip
+      - php-pgsql
+    state: present
+    update_cache: yes

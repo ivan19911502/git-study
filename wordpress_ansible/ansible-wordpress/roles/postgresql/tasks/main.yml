@@ -1,0 +1,66 @@
+---
+- name: Install PostgreSQL
+  ansible.builtin.apt:
+    name:
+      - postgresql
+      - postgresql-contrib
+      - python3-psycopg2
+    state: present
+
+- name: Ensure PostgreSQL is started and enabled
+  ansible.builtin.service:
+    name: postgresql
+    state: started
+    enabled: yes
+
+- name: Create the database specified in vars
+  become: true
+  become_user: postgres
+  ansible.builtin.postgresql_db:
+    name: "wordpress"
+    state: present
+
+- name: Ensure user has access to the new database
+  become: true
+  become_user: postgres
+  ansible.builtin.postgresql_user:
+    db: "wordpress"
+    name: "wp"
+    password: "123"
+    priv: ALL
+    state: present
+  
+- name: Grant CREATE privilege on public schema to wp user
+  become: yes
+  become_user: postgres
+  ansible.builtin.postgresql_query:
+    db: wordpress
+    query: GRANT CREATE ON SCHEMA public TO wp;
+
+
+
+# - name: Create PostgreSQL database
+#   ansible.builtin.postgresql_db:
+#     name: "wordpress"
+#   become: yes
+#   become_user: postgres
+#   become_method: sudo
+
+# - name: Create PostgreSQL user
+#   ansible.builtin.postgresql_user:
+#     name: "wp"
+#     password: "123"
+#     role_attr_flags: CREATEDB
+#   become: yes
+#   become_user: postgres
+#   become_method: sudo
+
+# - name: Grant privileges to user
+#   ansible.builtin.postgresql_privs:
+#     type: database
+#     database: "wordpress"
+#     roles: "wp"
+#     privs: ALL
+#   become: yes
+#   become_user: postgres
+#   become_method: sudo

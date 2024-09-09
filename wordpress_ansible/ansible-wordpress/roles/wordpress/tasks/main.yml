@@ -1,0 +1,73 @@
+---
+- name: Check if WordPress is already installed
+  ansible.builtin.stat:
+    path: /srv/www/wordpress/wp-config.php
+  register: wp_config
+
+- name: Download WordPress
+  ansible.builtin.get_url:
+    url: https://wordpress.org/latest.tar.gz
+    dest: /tmp/wordpress.tar.gz
+  when: not wp_config.stat.exists
+
+- name: add /srv/www directory
+  ansible.builtin.file:
+    path: /srv/www
+    state: directory
+    owner: www-data
+    group: www-data
+  become: yes
+  when: not wp_config.stat.exists
+
+- name: Extract WordPress
+  ansible.builtin.unarchive:
+    src: /tmp/wordpress.tar.gz
+    dest: /srv/www/
+    remote_src: yes
+  when: not wp_config.stat.exists
+
+- name: Set correct permissions for WordPress
+  ansible.builtin.file:
+    path: /srv/www/wordpress
+    owner: www-data
+    group: www-data
+    recurse: yes
+  when: not wp_config.stat.exists
+
+- name: Clone postgresql-for-wordpress repository
+  ansible.builtin.git:
+    repo: 'https://github.com/kevinoid/postgresql-for-wordpress.git'
+    dest: /tmp/postgresql-for-wordpress 
+  become: yes
+  when: not wp_config.stat.exists
+
+
+- name: Create pg4wp directory
+  ansible.builtin.file:
+    path: /srv/www/wordpress/wp-content/pg4wp
+    state: directory
+  when: not wp_config.stat.exists
+
+- name: Copy pg4wp files to WordPress plugins directory
+  ansible.builtin.copy:
+    src: /tmp/postgresql-for-wordpress/pg4wp
+    dest: /srv/www/wordpress/wp-content/
+    remote_src: yes   #Ansible будет копировать файлы с одного места на удаленном сервере в другое место на том же сервере
+    mode: preserve    #Ansible не изменяет права доступа файлов, а оставляет их такими же, какими они были в исходной директории.
+  become: yes
+  when: not wp_config.stat.exists
+
+- name: Copy db.php file
+  ansible.builtin.copy:
+    src: /srv/www/wordpress/wp-content/pg4wp/db.php
+    dest: /srv/www/wordpress/wp-content/db.php
+    remote_src: yes   #Ansible будет копировать файлы с одного места на удаленном сервере в другое место на том же сервере
+    mode: preserve    #Ansible не изменяет права доступа файлов, а оставляет их такими же, какими они были в исходной директории.
+  become: yes
+  when: not wp_config.stat.exists
+
+
+- name: Configure WordPress
+  ansible.builtin.template:
+    src: wp-config.php.j2
+    dest: /srv/www/wordpress/wp-config.php
